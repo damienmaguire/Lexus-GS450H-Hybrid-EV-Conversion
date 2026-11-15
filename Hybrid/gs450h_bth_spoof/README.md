@@ -156,5 +156,4 @@ dumps.
 
 ## Licence
 
-TODO: intended licence is GPL-3.0-or-later. No licence file has been added
-yet.
+GPL-3.0
