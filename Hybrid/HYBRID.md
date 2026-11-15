@@ -1,5 +1,8 @@
 # Lexus GS450h battery ECU (BTH) emulator — BMW PHEV modules
 
+<img width="4096" height="2304" alt="Display" src="https://github.com/user-attachments/assets/99dc225f-0a37-43ec-a611-712532ac805f" />
+
+
 Replaces the battery smart unit ("BTH" link) of a 2006 Lexus GS450h with a
 Raspberry Pi Pico 2. The Pico reads five BMW Gen1 PHEV battery modules over
 CAN, reads pack current from a the Lexus OEM sensor, and sends the hybrid control ECU
