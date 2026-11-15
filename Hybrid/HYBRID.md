@@ -2,16 +2,8 @@
 
 Replaces the battery smart unit ("BTH" link) of a 2006 Lexus GS450h with a
 Raspberry Pi Pico 2. The Pico reads five BMW Gen1 PHEV battery modules over
-CAN, reads pack current from a Hall sensor, and sends the hybrid control ECU
+CAN, reads pack current from a the Lexus OEM sensor, and sends the hybrid control ECU
 the serial frames it expects from the original Toyota battery.
-
-Repo: `<repo-url>` · Licence: TODO (GPL-3.0-or-later recommended, see [Credits and licence](#credits-and-licence))
-
-> **HV safety warning.** This firmware sends made-up battery data to the
-> hybrid ECU, which can close the main contactors on that data. It is for
-> research on a test vehicle, not for road use. Use it only with a known-safe
-> pack, fused HV wiring, and a way to cut 12 V / IG immediately. Disconnect
-> the original battery sense board from BTH+ / BTH− before connecting this.
 
 Protocol details are in [PROTOCOL.md](PROTOCOL.md). The debugging history is
 in [HISTORY.md](HISTORY.md).
@@ -19,10 +11,6 @@ in [HISTORY.md](HISTORY.md).
 ---
 
 ## Status (15 Nov 2026)
-
-Build: `i18qnb_aux_db05_tb5i`
-(`bth_pico2_phev_v4m_liveH_i18qnb_aux_db05_tb5i.uf2`, sha256
-`e566e77d93d2083b720af4a644fd3e4db4c8668bb9962d05a899f110b0c23225`).
 
 Working on the car:
 
@@ -55,7 +43,7 @@ charges (~8 A with the engine running). See [Known issues](#known-issues).
 | Function | Pico 2 pin |
 |---|---|
 | BTH UART0 TX (to 74HCT04) | GP0 (pin 1) |
-| Current sensor in (ADC0) | GP26 (pin 31), via 10 kΩ / 20 kΩ divider |
+| Current sensor in (ADC0) | GP26 (pin 31), via 10 kΩ / 20 kΩ divider and 10nF filter cap |
 | MCP2518FD MISO / CS / SCK / MOSI | GP16 / GP17 / GP18 / GP19 (SPI0, 8 MHz) |
 | MCP2518FD INT | GP15 |
 | Status LED | onboard, toggles each burst |
@@ -112,8 +100,7 @@ export PICO_TOOLCHAIN_PATH=/path/to/arm-gnu-toolchain
 
 The script passes the configuration as `V5_DEFS` and prints the UF2's sha256.
 **A plain `cmake` without `V5_DEFS` builds old defaults that do not work on
-the car.** Use the script. (TODO: move the tested config into a header and
-make it the default.)
+the car.** Use the script.
 
 ### Configuration of the current build
 
@@ -176,16 +163,4 @@ The laptop boot never overwrites the car log. Column details:
 - Measure the 12 V battery and send the real value.
 - Add the module-data timeout and a watchdog.
 - Identify the unknown fields (slot 1 X13, b14[5:4]).
-- Clean up the repo: one build script, tests in `tests/`, drop the dead
-  experiment flags.
 
-## Credits and licence
-
-- Damien Maguire — car, hardware, captures and testing.
-- The team — analysis, firmware, and independent checksum cross-checks.
-  TODO: Damien to edit attribution.
-- The forum READY frame buffers were the starting point for the frame
-  template. TODO: add forum link.
-- BMW module CAN handling follows stm32_betty and Tom-evnut's BMW PHEV BMS
-  (SimpBMS). Both are GPLv3, so this repo should be GPL-3.0-or-later with a
-  NOTICE file. TODO: confirm and add LICENSE.
