@@ -1,4 +1,4 @@
-# Lexus-GS450H-Hybrid-EV-Conversion
+# Lexus GS450H Hybrid To EV Conversion
 
 <img width="4096" height="2304" alt="Lexi" src="https://github.com/user-attachments/assets/52703335-0826-4e30-bbba-e95c4e043a59" />
 
